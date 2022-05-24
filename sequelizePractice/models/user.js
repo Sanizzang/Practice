@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+
 class User extends Sequelize.Model {
     // 스태틱 메소드
     // 테이블에 대한 설정
@@ -78,6 +79,7 @@ class User extends Sequelize.Model {
         // db.User (hasMany) db.Comment = 1:N 관계 이다.
         // foreignKey 외래키 컬럼은 commenter
         // sourceKey 내 키(부모키) 컬럼은 id
+        db.User.hasMany(db.Post, { foreignKey: 'writer', sourceKey: 'id' });
     }
 };
 module.exports = User;

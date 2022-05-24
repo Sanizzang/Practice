@@ -19,8 +19,8 @@ router.route('/')
             const user = await User.create(
                 {
                     name: req.body.name,
-                    age: req.body.age,
-                    married: req.body.married,
+                    provider: req.body.provider,
+                    // ... 등등
                 }
             );
             console.log(user);

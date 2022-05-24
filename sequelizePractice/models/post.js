@@ -1,27 +1,27 @@
 const Sequelize = require('sequelize');
 
-class Comment extends Sequelize.Model {
+class Post extends Sequelize.Model {
     static init(sequelize) {
         return super.init(
             {
-                comment: {
-                    type: Sequelize.STRING(100),
+                title: {
+                    type: Sequelize.STRING(45),
                     allowNull: false,
                 },
-                created_at: {
+                content: {
+                    type: Sequelize.TEXT,
+                    allowNull: true,
+                },
+                createdAt: {
                     type: Sequelize.DATE,
                     allowNull: true,
-                    defaultValue: Sequelize.NOW,
+                    defaultValue: Sequelize.NOW
                 },
-                class: {
-                    type: Sequelize.INTEGER,
-                    allowNull: true,
-                },
-                order: {
+                grade: {
                     type: Sequelize.STRING(45),
                     allowNull: true,
                 },
-                groupNum: {
+                like_count: {
                     type: Sequelize.INTEGER,
                     allowNull: true,
                 }
@@ -29,20 +29,20 @@ class Comment extends Sequelize.Model {
             {
                 sequelize,
                 timestamps: false,
-                modelName: 'Comment',
-                tableName: 'comments',
+                modelName: 'Post',
+                tableName: 'posts',
                 paranoid: false,
                 charset: 'utf8mb4',
                 collate: 'utf8mb4_general_ci'
             });
     }
     static associate(db) {
-        db.Comment.belongsTo(db.User, { foreignKey: 'commenter', targetKey: 'id' });
-        // db.Comment (belongTo) db.User = N:1 관계 이다.
-        // foreignKey 외래키 컬럼은 commenter
+        db.Post.belongsTo(db.User, { foreignKey: 'writer', targetKey: 'id' });
+        // db.Post (belongTo) db.User = N:1 관계 이다.
+        // foreignKey 외래키 컬럼은 writer
         // targetKey 부모키 컬럼은 id
-        db.Comment.hasMany(db.Post, { foreignKey: 'postComment', sourceKey: 'id'});
-        db.Comment.hasMany(db.Likey_comment, {foreignKey: 'commentLiker', sourceKey: 'id'});
+        db.Post.belongsTo(db.Comment, { foreignKey: 'postComment', targetKey: 'id'});
+        db.Post.hasMany(db.Likey_post, { foreignKey: 'postLiker', sourceKey: 'id' })
     }
 };
 
